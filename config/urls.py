@@ -5,15 +5,11 @@ from api import views
 
 router = routers.SimpleRouter()
 router.register(r'users', views.UserViewSet)
+users_router = routers.NestedSimpleRouter(router, r'users', lookup='user')
+users_router.register(r'todos', views.TodoViewSet, basename='user-todos')
 router.register(r'todos', views.TodoViewSet)
 router.register(r'posts', views.PostViewSet)
 router.register(r'comments', views.CommentViewSet)
-
-users_router = router.NestedSimpleRouter(router, r'users', lookup='user')
-users_router.register(r'users', views.TodoViewSet, basename='users-todos')
-
-todos_router = router.NestedSimpleRouter(router, r'users', lookup='todo')
-todos_router.register(r'users', views.TodoViewSet, basename='users-todos')
 
 # Wire up our API using automatic URL routing.
 urlpatterns = [
